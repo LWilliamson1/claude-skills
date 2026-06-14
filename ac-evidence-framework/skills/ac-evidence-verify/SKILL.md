@@ -63,6 +63,11 @@ Produce:
 3. A single verdict: **PASS** (all AC's Verified) or **BLOCK** (any AC not
    Verified), stated explicitly at the top of the report.
 
+See `../../EXAMPLE.md` ("What ac-evidence-verify would check later") for a
+worked example of how a transition-based AC (GIF/video) gets checked frame
+by frame against its Expected Result, including a case that looks fine at a
+glance but should still be marked Failed.
+
 ## Guardrails
 
 - Never mark an AC Verified based on the artifact "looking roughly right" —

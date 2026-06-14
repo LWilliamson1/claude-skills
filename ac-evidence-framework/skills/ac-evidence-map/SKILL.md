@@ -61,6 +61,9 @@ the field should be left blank or filled with a placeholder.
    specific enough yet. Do not fill this field with something generic —
    report back that this AC needs to be refined before mapping can proceed.
 
+   See `../../EXAMPLE.md` for worked Bad-vs-Good Expected Result examples
+   across screenshot, GIF/video, test-output, and log-based AC's.
+
 5. **Capture method** — a category appropriate to the stated platform(s),
    chosen from the taxonomy in `../../METHODOLOGY.md` (Playwright/Cypress
    for web, `screencapture`/AppleScript for macOS, PowerShell/ffmpeg for
