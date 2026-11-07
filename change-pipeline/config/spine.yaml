@@ -1,0 +1,31 @@
+# The shared spine. Owned by the platform; type profiles cannot remove or
+# reorder these stages. Hooks are the only places profiles contribute steps.
+
+stages:
+  - id: intake
+  - id: classify        # hook: detect
+    hook: detect
+  - id: resolve         # type x tier -> workflow
+  - id: plan            # hook: plan
+    hook: plan
+  - id: build
+  - id: verify          # hook: verify (runs after shared gates)
+    hook: verify
+  - id: human-gate      # hook: gate (choose from gate policy menu only)
+    hook: gate
+  - id: merge-and-log
+
+# Run on every change at every tier. Profiles add to these, never replace them.
+shared_gates:
+  - lint
+  - typecheck
+  - unit-tests
+  - secret-scan
+
+# If the built diff touches files outside the classified scope, the runner
+# re-runs classification. The tier can only go up as a result.
+retier_on_drift: true
+
+# Files that match no type profile are routed to the default profile at
+# no lower than this tier.
+unmatched_floor: T1

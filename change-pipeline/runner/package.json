@@ -1,0 +1,22 @@
+{
+  "name": "change-pipeline-runner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Resolves a change into a workflow: detect types, compute risk tier, compose steps and gate.",
+  "scripts": {
+    "plan": "tsx src/cli.ts plan",
+    "validate": "tsx src/cli.ts validate",
+    "typecheck": "tsc --noEmit",
+    "examples": "bash ../examples/run.sh"
+  },
+  "dependencies": {
+    "minimatch": "^10.0.0",
+    "yaml": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

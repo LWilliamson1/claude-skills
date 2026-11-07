@@ -1,0 +1,17 @@
+type: feature
+extends: default
+detect:
+  paths: ["src/**/routes/**", "src/**/pages/**", "src/**/components/**", "src/api/**"]
+  intents: [feature, new]
+  risk_floor: T1
+plan:
+  T1: [implementation-plan]
+  T2: [plan-overview, skeptic-review, ac-evidence-map]
+  T3: [design-ripple, cold-read]
+verify:
+  all: [newcomer-reader]
+  T2: [mutation-test, ac-evidence-verify]
+  T3: [concurrency-review]
+gate:
+  T2: approve-diff
+  T3: approve-plan-and-diff

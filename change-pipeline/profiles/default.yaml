@@ -1,0 +1,14 @@
+# Fallback for anything a profile doesn't override, and the profile used
+# for files no other type claims.
+#
+# Hook lists are cumulative: at tier T you get `all` plus every tier key
+# at or below T. So a T3 change also runs the T2 steps.
+
+type: default
+plan:
+  T2: [implementation-plan]
+  T3: [skeptic-review]
+verify:
+  T2: [newcomer-reader]
+  T3: [mutation-test]
+# gate omitted: the tier minimum from config/gates.yaml applies
