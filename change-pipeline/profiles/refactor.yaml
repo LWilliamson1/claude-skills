@@ -1,0 +1,16 @@
+# Paths can't tell a refactor from a feature, so this type is claimed by
+# declared intent. The verifier then holds the change to that claim: if
+# golden tests show a behavior change, it isn't a refactor.
+type: refactor
+extends: default
+detect:
+  intents: [refactor, rename, cleanup]
+  risk_floor: T1
+plan:
+  all: [fan-out-map]
+  T3: [skeptic-review]
+verify:
+  all: [golden-test-equivalence]
+  T2: [mutation-test]
+gate:
+  T1: approve-diff

@@ -1,0 +1,21 @@
+# The fixed menu of human-gate policies. Owned by the runner. Profiles pick
+# from this list; they cannot define new gate kinds. Ordered weakest to
+# strictest; composition always takes the strictest.
+
+policies:
+  - id: auto-merge
+    rank: 0
+    description: Merge when shared gates and type verifiers pass. No human.
+  - id: approve-diff
+    rank: 1
+    description: A human approves the final diff.
+  - id: approve-plan-and-diff
+    rank: 2
+    description: A human approves the plan before build starts, then the diff.
+
+# Minimum gate per tier. A profile can ask for stricter, never weaker.
+tier_minimum:
+  T0: auto-merge
+  T1: approve-diff
+  T2: approve-diff
+  T3: approve-plan-and-diff

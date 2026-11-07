@@ -1,0 +1,18 @@
+# Example of adding a new change type: one file, no runner changes.
+# It reuses library steps (fan-out-map, skeptic-review) and adds two new
+# deterministic ones (dry-run-on-clone, rollback-script-check) that any
+# other type can now use too.
+type: migration
+extends: default
+detect:
+  paths: ["db/migrations/**"]
+  intents: [migration, schema]
+  risk_floor: T2
+plan:
+  all: [fan-out-map, skeptic-review]
+  T3: [rollback-plan]
+verify:
+  all: [dry-run-on-clone, rollback-script-check]
+gate:
+  T2: approve-diff
+  T3: approve-plan-and-diff

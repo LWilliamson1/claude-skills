@@ -1,0 +1,31 @@
+# Deterministic risk floors. These come from the repo, not from a model's
+# opinion. A profile or an LLM judgment can raise the tier above these
+# floors but can never lower it below them.
+#
+# Tiers:
+#   T0  content      - fidelity to a source of truth, no logic
+#   T1  contained    - one module, easily reverted
+#   T2  cross-cutting - several modules or a public interface
+#   T3  irreversible - money, auth, data deletion, schema, external side effects
+
+path_floors:
+  - paths: ["**/payments/**", "**/billing/**", "**/pricing/**"]
+    tier: T3
+    reason: money moves
+  - paths: ["**/auth/**", "**/permissions/**", "**/session/**"]
+    tier: T3
+    reason: access control
+  - paths: ["db/migrations/**", "**/*.sql"]
+    tier: T2
+    reason: schema or data change
+  - paths: ["**/api/public/**", "**/openapi*.yaml"]
+    tier: T2
+    reason: public contract
+
+size_floors:
+  - min_files: 20
+    tier: T2
+    reason: wide diff
+  - min_domains: 3        # distinct top-level directories touched
+    tier: T2
+    reason: crosses several domains

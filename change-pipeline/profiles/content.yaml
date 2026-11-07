@@ -1,0 +1,11 @@
+type: content
+extends: default
+detect:
+  paths: ["content/**", "**/i18n/**", "**/locales/**", "**/*.copy.json"]
+  intents: [copy, content]
+  risk_floor: T0
+plan: {}            # nothing to plan: fidelity, not reasoning
+verify:
+  all: [source-of-truth-diff]
+gate:
+  T0: auto-merge

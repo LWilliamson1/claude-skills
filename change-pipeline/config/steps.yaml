@@ -1,0 +1,76 @@
+# The shared step library. Any type profile can use any step at the hooks
+# the step allows. Write a new step only when nothing here does the job.
+#
+# kind: deterministic = code/tooling, same answer every run
+#       agent         = an LLM pass with its own isolated context
+
+steps:
+  # ---- plan hook ----
+  - id: implementation-plan
+    kind: agent
+    hooks: [plan]
+    description: Split the change into small commits, dependencies first, naming files each touches.
+  - id: plan-overview
+    kind: agent
+    hooks: [plan]
+    description: Interrogate scope (user journeys, must-have vs nice-to-have, where it stops) and survey existing code.
+  - id: skeptic-review
+    kind: agent
+    hooks: [plan, verify]
+    description: Adversarial reviewer whose job is to find holes (races, missing cases, scope creep).
+  - id: design-ripple
+    kind: agent
+    hooks: [plan]
+    description: Check the plan against existing design docs for anything it quietly contradicts.
+  - id: cold-read
+    kind: agent
+    hooks: [plan]
+    description: Read the plan with no prior context and report what would stop a day-one dev from starting.
+  - id: fan-out-map
+    kind: deterministic
+    hooks: [plan]
+    description: List every module that imports the symbols being changed.
+  - id: rollback-plan
+    kind: agent
+    hooks: [plan]
+    description: Write and sanity-check the rollback path before anything irreversible ships.
+  - id: ac-evidence-map
+    kind: agent
+    hooks: [plan]
+    source: ../ac-evidence-framework/skills/ac-evidence-map
+    description: Declare, per acceptance criterion, the evidence that will prove it.
+
+  # ---- verify hook ----
+  - id: newcomer-reader
+    kind: agent
+    hooks: [verify]
+    description: Read the diff knowing nothing but one sentence of intent; report confusing code and tests that can't fail.
+  - id: mutation-test
+    kind: deterministic
+    hooks: [verify]
+    description: Mutate touched code and confirm tests fail (e.g. Stryker for JS/TS).
+  - id: concurrency-review
+    kind: agent
+    hooks: [verify]
+    description: Look for races between this change and async paths (webhooks, jobs, retries).
+  - id: source-of-truth-diff
+    kind: deterministic
+    hooks: [verify]
+    description: Compare shipped copy or config values against the system of record (CRM, i18n, design tokens).
+  - id: golden-test-equivalence
+    kind: deterministic
+    hooks: [verify]
+    description: Prove behavior is unchanged with golden or snapshot tests run before and after.
+  - id: dry-run-on-clone
+    kind: deterministic
+    hooks: [verify]
+    description: Apply the migration to a production-shaped clone and check timing and row counts.
+  - id: rollback-script-check
+    kind: deterministic
+    hooks: [verify]
+    description: Apply then roll back on the clone; confirm the schema returns to its prior state.
+  - id: ac-evidence-verify
+    kind: agent
+    hooks: [verify]
+    source: ../ac-evidence-framework/skills/ac-evidence-verify
+    description: Check captured artifacts against the evidence contract and produce a pass/fail report.
